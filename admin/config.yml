@@ -1,26 +1,12 @@
-backend:
-  name: github
-  repo: joaoelikinol/corretor
-  branch: main
-  auth_type: pkce
-  base_url: https://decap-cms-oauth-provider.vercel.app
-
-media_folder: "images/uploads"
-public_folder: "/images/uploads"
-
-collections:
-  - name: "imoveis"
-    label: "Imóveis"
-    folder: "content/imoveis"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Título do Imóvel", name: "title", widget: "string" }
-      - { label: "Preço (ex: R$ 850.000)", name: "price", widget: "string" }
-      - { label: "Tipo / Categoria", name: "category", widget: "select", options: ["rural", "urbano", "aluguel"] }
-      - { label: "Foto Principal", name: "image", widget: "image" }
-      - { label: "Quartos", name: "bedrooms", widget: "string", required: false }
-      - { label: "Banheiros", name: "bathrooms", widget: "string", required: false }
-      - { label: "Área (m² ou Alqueires)", name: "area", widget: "string" }
-      - { label: "Localização / Bairro", name: "location", widget: "string" }
-      - { label: "Descrição Completa", name: "body", widget: "markdown" }
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Administrativo - João Eli Kinol</title>
+  <link href="config.yml" type="text/yaml" rel="cms-config-url" />
+</head>
+<body>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+</body>
+</html>
