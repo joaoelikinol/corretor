@@ -3,7 +3,6 @@ backend:
   repo: joaoelikinol/corretor
   branch: main
   auth_type: pkce
-  base_url: https://auth.decapcms.org
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
