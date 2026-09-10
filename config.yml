@@ -3,6 +3,7 @@ backend:
   repo: joaoelikinol/corretor
   branch: main
   auth_type: pkce
+  base_url: https://decap-cms-oauth-provider.vercel.app
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
@@ -23,3 +24,4 @@ collections:
       - { label: "Área (m² ou Alqueires)", name: "area", widget: "string" }
       - { label: "Localização / Bairro", name: "location", widget: "string" }
       - { label: "Descrição Completa", name: "body", widget: "markdown" }
+      
