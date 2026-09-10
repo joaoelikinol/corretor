@@ -1,25 +1,55 @@
-backend:
-  name: github
-  repo: joaoelikinol/corretor
-  branch: main
-  auth_type: pkce
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>João Eli Kinol - Corretor de Imóveis | CRECI 271094-F</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
 
-media_folder: "images/uploads"
-public_folder: "/images/uploads"
+  <!-- Header / Navbar -->
+  <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold tracking-wide">João Eli Kinol</h1>
+        <p class="text-xs text-amber-400 font-medium">Corretor de Imóveis • CRECI 271094-F</p>
+      </div>
+      <a href="https://wa.me/5515998033288?text=Olá,%20João!%20Gostaria%20de%20informações%20sobre%20seus%20imóveis." target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 transition-all">
+        <i class="fab fa-whatsapp text-lg"></i> (15) 99803-3288
+      </a>
+    </div>
+  </header>
 
-collections:
-  - name: "imoveis"
-    label: "Imóveis"
-    folder: "content/imoveis"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Título do Imóvel", name: "title", widget: "string" }
-      - { label: "Preço (ex: R$ 850.000)", name: "price", widget: "string" }
-      - { label: "Tipo / Categoria", name: "category", widget: "select", options: ["rural", "urbano", "aluguel"] }
-      - { label: "Foto Principal", name: "image", widget: "image" }
-      - { label: "Quartos", name: "bedrooms", widget: "string", required: false }
-      - { label: "Banheiros", name: "bathrooms", widget: "string", required: false }
-      - { label: "Área (m² ou Alqueires)", name: "area", widget: "string" }
-      - { label: "Localização / Bairro", name: "location", widget: "string" }
-      - { label: "Descrição Completa", name: "body", widget: "markdown" }
+  <!-- Hero Banner -->
+  <section class="bg-slate-800 text-white py-16 px-4 text-center relative">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-5xl font-extrabold mb-4">Encontre o imóvel ideal em São Miguel Arcanjo e Região</h2>
+      <p class="text-lg text-gray-300 mb-8">Atendimento personalizado para compra, venda e avaliação de imóveis urbanos e rurais.</p>
+      <a href="/admin" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold px-6 py-3 rounded-lg transition-all inline-block">
+        Área Administrativa (Painel)
+      </a>
+    </div>
+  </section>
+
+  <!-- Vitrine de Imóveis -->
+  <main class="max-w-7xl mx-auto px-4 py-12">
+    <h3 class="text-2xl font-bold mb-8 text-slate-900 border-b pb-2">Imóveis em Destaque</h3>
+    
+    <div id="imoveis-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Card Mensagem Inicial -->
+      <div class="bg-white p-6 rounded-xl shadow-md border text-center col-span-full">
+        <p class="text-gray-600 text-lg">Os imóveis cadastrados pelo painel administrativo aparecerão aqui automaticamente.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="bg-slate-900 text-gray-400 py-8 text-center text-sm border-t border-slate-800">
+    <p>© 2026 João Eli Kinol - Corretor de Imóveis. Todos os direitos reservados.</p>
+    <p class="mt-1 text-xs text-gray-500">São Miguel Arcanjo - SP</p>
+  </footer>
+
+</body>
+</html>
