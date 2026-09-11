@@ -8,13 +8,5 @@
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <script>
-    CMS.registerBackend('github-token', {
-      init: function() {},
-      authenticate: function(credentials) {
-        return Promise.resolve({ token: credentials.token, provider: 'github' });
-      }
-    });
-  </script>
 </body>
 </html>
