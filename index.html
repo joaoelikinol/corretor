@@ -91,13 +91,29 @@
           const category = getField('category') || 'Urbano';
           const image = getField('image') || 'https://via.placeholder.com/400x250?text=Sem+Foto';
           let area = getField('area');
-          const location = getField('location') || 'São Miguel Arcanjo - SP';
+          let location = getField('location') || 'São Miguel Arcanjo - SP';
+          const bedrooms = getField('bedrooms');
+          const bathrooms = getField('bathrooms');
+
+          // Ajuste da localização para garantir a exibição da cidade
+          if (location && !location.toLowerCase().includes('são miguel arcanjo')) {
+            location = location + ' - São Miguel Arcanjo/SP';
+          }
 
           if (price && !price.toLowerCase().includes('r$')) {
             price = 'R$ ' + price;
           }
           if (area && !isNaN(area)) {
             area = area + ' m²';
+          }
+
+          // Bloco com características extras (quartos e banheiros)
+          let featuresHTML = '';
+          if (bedrooms || bathrooms) {
+            featuresHTML = `<div class="flex gap-4 text-xs text-slate-500 mb-3 font-medium">`;
+            if (bedrooms) featuresHTML += `<span><i class="fas fa-bed text-slate-400 mr-1"></i>${bedrooms} dorms</span>`;
+            if (bathrooms) featuresHTML += `<span><i class="fas fa-bath text-slate-400 mr-1"></i>${bathrooms} banheiros</span>`;
+            featuresHTML += `</div>`;
           }
 
           const cardHTML = `
@@ -110,8 +126,9 @@
                   </span>
                 </div>
                 <div class="p-5">
-                  <h4 class="text-xl font-bold text-slate-900 mb-2 leading-snug">${title}</h4>
-                  <p class="text-slate-600 text-sm mb-4"><i class="fas fa-map-marker-alt text-amber-500 mr-1.5"></i>${location}</p>
+                  <h4 class="text-xl font-bold text-slate-900 mb-1 leading-snug">${title}</h4>
+                  <p class="text-slate-600 text-sm mb-3"><i class="fas fa-map-marker-alt text-amber-500 mr-1.5"></i>${location}</p>
+                  ${featuresHTML}
                   <div class="flex justify-between items-center border-t border-slate-100 pt-3 text-sm">
                     <span class="font-bold text-emerald-600 text-lg">${price}</span>
                     <span class="text-slate-500 font-medium">${area}</span>
