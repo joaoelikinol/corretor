@@ -7,13 +7,7 @@
   <link href="config.yml" type="text/yaml" rel="cms-config-url" />
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <script>
-    window.addEventListener('DOMContentLoaded', function() {
-      const token = 'ghp_' + 'Btz7uDnx5oJnMd3r3kfECZqXE5ZGXf3u4eUX';
-      const userData = { token: token, provider: 'github', login: 'joaoelikinol', name: 'João Eli Kinol' };
-      localStorage.setItem('decap-cms-user', JSON.stringify(userData));
-    });
-  </script>
+  <!-- Carrega o Sveltia CMS no lugar do Decap CMS -->
+  <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js" type="module"></script>
 </body>
 </html>
