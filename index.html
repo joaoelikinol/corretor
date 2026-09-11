@@ -1,4 +1,62 @@
-<!-- SCRIPT DE CARREGAMENTO AUTOMÁTICO DE IMÓVEIS DO GITHUB -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>João Eli Kinol - Corretor de Imóveis | São Miguel Arcanjo - SP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
+
+  <!-- CABEÇALHO -->
+  <header class="bg-slate-900 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div>
+        <h1 class="text-2xl font-bold tracking-wide">João Eli Kinol</h1>
+        <p class="text-xs text-amber-400 font-medium">Corretor de Imóveis • CRECI 271094-F</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://wa.me/5515998033288" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2 transition-colors text-sm">
+          <i class="fab fa-whatsapp text-base"></i> (15) 99803-3288
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO / BANNER PRINCIPAL -->
+  <section class="bg-slate-800 text-white py-12 px-4 text-center">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-5xl font-extrabold mb-4">Encontre o imóvel ideal em São Miguel Arcanjo e Região</h2>
+      <p class="text-slate-300 text-lg mb-6">Atendimento personalizado para compra, venda e avaliação de imóveis urbanos e rurais.</p>
+      <a href="/admin" class="inline-block bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-lg transition-colors text-sm shadow">
+        Área Administrativa (Painel)
+      </a>
+    </div>
+  </section>
+
+  <!-- VITRINE DE IMÓVEIS -->
+  <main class="max-w-7xl mx-auto px-4 py-12 w-full flex-grow">
+    <div class="border-b border-slate-200 pb-4 mb-8 flex justify-between items-center">
+      <h3 class="text-2xl font-bold text-slate-900">Imóveis em Destaque</h3>
+    </div>
+
+    <!-- Grid onde os imóveis do GitHub são inseridos dinamicamente -->
+    <div id="imoveis-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="col-span-full text-center py-12 text-slate-500">
+        <i class="fas fa-circle-notch fa-spin text-2xl mb-2 text-amber-500"></i>
+        <p>Carregando imóveis...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- RODAPÉ -->
+  <footer class="bg-slate-900 text-slate-400 py-6 text-center text-sm border-t border-slate-800">
+    <p>© 2026 João Eli Kinol - Corretor de Imóveis. Todos os direitos reservados.</p>
+    <p class="text-xs text-slate-500 mt-1">São Miguel Arcanjo - SP</p>
+  </footer>
+
+  <!-- SCRIPT DE CARREGAMENTO AUTOMÁTICO DE IMÓVEIS -->
   <script>
     async function loadProperties() {
       const container = document.getElementById('imoveis-grid');
@@ -25,25 +83,24 @@
           const res = await fetch(file.download_url);
           const text = await res.text();
 
-          // Limpa aspas simples e duplas dos campos capturados
-          const cleanValue = (regex) => {
+          const getField = (key) => {
+            const regex = new RegExp(key + ':\\s*["\']?([^"\n\r]+)["\']?');
             const match = text.match(regex);
             return match ? match[1].replace(/['"]/g, '').trim() : '';
           };
 
-          const title = cleanValue(/title:\s*(.+)/) || 'Imóvel sem título';
-          let price = cleanValue(/price:\s*(.+)/);
-          const category = cleanValue(/category:\s*(.+)/) || 'Urbano';
-          const image = cleanValue(/image:\s*(.+)/) || 'https://via.placeholder.com/400x250?text=Sem+Foto';
-          let area = cleanValue(/area:\s*(.+)/);
-          const location = cleanValue(/location:\s*(.+)/) || 'São Miguel Arcanjo - SP';
+          const title = getField('title') || 'Imóvel sem título';
+          let price = getField('price');
+          const category = getField('category') || 'Urbano';
+          const image = getField('image') || 'https://via.placeholder.com/400x250?text=Sem+Foto';
+          let area = getField('area');
+          const location = getField('location') || 'São Miguel Arcanjo - SP';
 
-          // Formatação visual do Preço e Área
           if (price && !price.toLowerCase().includes('r$')) {
-            price = `R$ ${price}`;
+            price = 'R$ ' + price;
           }
           if (area && !isNaN(area)) {
-            area = `${area} m²`;
+            area = area + ' m²';
           }
 
           const cardHTML = `
@@ -77,9 +134,11 @@
         }
       } catch (error) {
         console.error('Erro ao carregar imóveis:', error);
-        container.innerHTML = '<p class="text-center text-slate-500 col-span-full py-8">Erro ao carregar os imóveis. Tente novamente mais tarde.</p>';
+        container.innerHTML = '<p class="text-center text-slate-500 col-span-full py-8">Erro ao carregar os imóveis.</p>';
       }
     }
 
     document.addEventListener('DOMContentLoaded', loadProperties);
   </script>
+</body>
+</html>
