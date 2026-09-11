@@ -1,60 +1,131 @@
-<script>
-  async function loadProperties() {
-    const container = document.getElementById('imoveis-grid');
-    if (!container) return;
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>João Eli Kinol - Corretor de Imóveis | São Miguel Arcanjo - SP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
 
-    try {
-      // Busca a lista de arquivos da pasta content/imoveis no GitHub
-      const response = await fetch('https://api.github.com/repos/joaoelikinol/corretor/contents/content/imoveis');
-      if (!response.ok) throw new Error('Falha ao buscar imóveis');
-      
-      const files = await response.json();
-      const markdownFiles = files.filter(file => file.name.endsWith('.md'));
+  <!-- CABEÇALHO -->
+  <header class="bg-slate-900 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div>
+        <h1 class="text-2xl font-bold tracking-wide">João Eli Kinol</h1>
+        <p class="text-xs text-amber-400 font-medium">Corretor de Imóveis • CRECI 271094-F</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://wa.me/5515998033288" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-2 transition-colors text-sm">
+          <i class="fab font-bold fa-whatsapp text-base"></i> (15) 99803-3288
+        </a>
+      </div>
+    </div>
+  </header>
 
-      if (markdownFiles.length === 0) {
-        container.innerHTML = '<p class="text-center text-gray-500 col-span-full">Nenhum imóvel cadastrado no momento.</p>';
-        return;
-      }
+  <!-- HERO / BANNER PRINCIPAL -->
+  <section class="bg-slate-800 text-white py-12 px-4 text-center">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-5xl font-extrabold mb-4">Encontre o imóvel ideal em São Miguel Arcanjo e Região</h2>
+      <p class="text-slate-300 text-lg mb-6">Atendimento personalizado para compra, venda e avaliação de imóveis urbanos e rurais.</p>
+      <a href="/admin" class="inline-block bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-lg transition-colors text-sm shadow">
+        Área Administrativa (Painel)
+      </a>
+    </div>
+  </section>
 
-      container.innerHTML = '';
+  <!-- VITRINE DE IMÓVEIS -->
+  <main class="max-w-7xl mx-auto px-4 py-12 w-full flex-grow">
+    <div class="border-b border-slate-200 pb-4 mb-8 flex justify-between items-center">
+      <h3 class="text-2xl font-bold text-slate-900">Imóveis em Destaque</h3>
+    </div>
 
-      for (const file of markdownFiles) {
-        const res = await fetch(file.download_url);
-        const text = await res.text();
+    <!-- Grid onde os imóveis do GitHub são inseridos dinamicamente -->
+    <div id="imoveis-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="col-span-full text-center py-12 text-slate-500">
+        <i class="fas fa-circle-notch fa-spin text-2xl mb-2 text-amber-500"></i>
+        <p>Carregando imóveis...</p>
+      </div>
+    </div>
+  </main>
 
-        // Extração dos campos do Markdown (Front Matter)
-        const title = (text.match(/title:\s*"?([^"\n]+)"?/) || [])[1] || 'Imóvel sem título';
-        const price = (text.match(/price:\s*"?([^"\n]+)"?/) || [])[1] || '';
-        const category = (text.match(/category:\s*"?([^"\n]+)"?/) || [])[1] || 'Urbano';
-        const image = (text.match(/image:\s*"?([^"\n]+)"?/) || [])[1] || 'https://via.placeholder.com/400x250?text=Sem+Foto';
-        const area = (text.match(/area:\s*"?([^"\n]+)"?/) || [])[1] || '';
-        const location = (text.match(/location:\s*"?([^"\n]+)"?/) || [])[1] || 'São Miguel Arcanjo - SP';
+  <!-- RODAPÉ -->
+  <footer class="bg-slate-900 text-slate-400 py-6 text-center text-sm border-t border-slate-800">
+    <p>© 2026 João Eli Kinol - Corretor de Imóveis. Todos os direitos reservados.</p>
+    <p class="text-xs text-slate-500 mt-1">São Miguel Arcanjo - SP</p>
+  </footer>
 
-        const cardHTML = `
-          <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-            <img src="${image}" alt="${title}" class="w-full h-48 object-cover">
-            <div class="p-5">
-              <span class="inline-block bg-amber-100 text-amber-800 text-xs px-2.5 py-0.5 rounded font-semibold uppercase mb-2">${category}</span>
-              <h3 class="text-xl font-bold text-gray-900 mb-2">${title}</h3>
-              <p class="text-gray-600 text-sm mb-3">📍 ${location}</p>
-              <div class="flex justify-between items-center border-t pt-3 mt-3">
-                <span class="text-lg font-bold text-emerald-600">${price}</span>
-                <span class="text-sm text-gray-500">${area}</span>
+  <!-- SCRIPT DE CARREGAMENTO AUTOMÁTICO DE IMÓVEIS DO GITHUB -->
+  <script>
+    async function loadProperties() {
+      const container = document.getElementById('imoveis-grid');
+      if (!container) return;
+
+      try {
+        const response = await fetch('https://api.github.com/repos/joaoelikinol/corretor/contents/content/imoveis');
+        if (!response.ok) {
+          container.innerHTML = '<p class="text-center text-slate-500 col-span-full py-8">Nenhum imóvel cadastrado no momento.</p>';
+          return;
+        }
+        
+        const files = await response.json();
+        const markdownFiles = files.filter(file => file.name.endsWith('.md'));
+
+        if (markdownFiles.length === 0) {
+          container.innerHTML = '<p class="text-center text-slate-500 col-span-full py-8">Nenhum imóvel cadastrado no momento.</p>';
+          return;
+        }
+
+        container.innerHTML = '';
+
+        for (const file of markdownFiles) {
+          const res = await fetch(file.download_url);
+          const text = await res.text();
+
+          const title = (text.match(/title:\s*"?([^"\n]+)"?/) || [])[1] || 'Imóvel sem título';
+          const price = (text.match(/price:\s*"?([^"\n]+)"?/) || [])[1] || '';
+          const category = (text.match(/category:\s*"?([^"\n]+)"?/) || [])[1] || 'Urbano';
+          const image = (text.match(/image:\s*"?([^"\n]+)"?/) || [])[1] || 'https://via.placeholder.com/400x250?text=Sem+Foto';
+          const area = (text.match(/area:\s*"?([^"\n]+)"?/) || [])[1] || '';
+          const location = (text.match(/location:\s*"?([^"\n]+)"?/) || [])[1] || 'São Miguel Arcanjo - SP';
+
+          const cardHTML = `
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow duration-300 flex flex-col justify-between">
+              <div>
+                <div class="relative">
+                  <img src="${image}" alt="${title}" class="w-full h-52 object-cover">
+                  <span class="absolute top-3 left-3 bg-amber-500 text-slate-950 font-bold text-xs px-2.5 py-1 rounded-md uppercase tracking-wider shadow">
+                    ${category}
+                  </span>
+                </div>
+                <div class="p-5">
+                  <h4 class="text-xl font-bold text-slate-900 mb-2 leading-snug">${title}</h4>
+                  <p class="text-slate-600 text-sm mb-4"><i class="fas fa-map-marker-alt text-amber-500 mr-1.5"></i>${location}</p>
+                  <div class="flex justify-between items-center border-t border-slate-100 pt-3 text-sm">
+                    <span class="font-bold text-emerald-600 text-lg">${price}</span>
+                    <span class="text-slate-500 font-medium">${area}</span>
+                  </div>
+                </div>
               </div>
-              <a href="https://wa.me/5515998033288?text=Olá%20João,%20tenho%20interesse%20no%20imóvel:%20${encodeURIComponent(title)}" 
-                 target="_blank" 
-                 class="mt-4 block w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 rounded transition-colors">
-                Tenho Interesse
-              </a>
+              <div class="p-5 pt-0">
+                <a href="https://wa.me/5515998033288?text=Olá%20João,%20tenho%20interesse%20no%20imóvel:%20${encodeURIComponent(title)}" 
+                   target="_blank" 
+                   class="w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm shadow-sm">
+                  <i class="fab fa-whatsapp text-base"></i> Tenho Interesse
+                </a>
+              </div>
             </div>
-          </div>
-        `;
-        container.innerHTML += cardHTML;
+          `;
+          container.innerHTML += cardHTML;
+        }
+      } catch (error) {
+        console.error('Erro ao carregar imóveis:', error);
+        container.innerHTML = '<p class="text-center text-slate-500 col-span-full py-8">Erro ao carregar os imóveis. Tente novamente mais tarde.</p>';
       }
-    } catch (error) {
-      console.error('Erro ao carregar imóveis:', error);
     }
-  }
 
-  document.addEventListener('DOMContentLoaded', loadProperties);
-</script>
+    document.addEventListener('DOMContentLoaded', loadProperties);
+  </script>
+</body>
+</html>
