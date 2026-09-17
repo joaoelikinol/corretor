@@ -7,7 +7,7 @@ gallery:
 bedrooms: '0'
 bathrooms: '0'
 area: 250 M2
-location: Vila Tomaz
+location: São Miguel Arcanjo-SP
 ---
 
 Lotes residenciais em condomínio fechado a partir de 250M2. A 3 minutos do Centro
