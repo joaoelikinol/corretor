@@ -1,6 +1,6 @@
 ---
 title: LOTEAMENTO RESIDENCIAL FECHADO
-price: 165000,00
+price: '165.000'
 category: Urbano
 gallery:
   - /images/uploads/pasted-image-1789646263115.png
