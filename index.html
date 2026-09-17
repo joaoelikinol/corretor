@@ -86,10 +86,24 @@
             return match ? match[1].replace(/['"]/g, '').trim() : '';
           };
 
+          // Extrai a primeira imagem cadastrada na galeria ou no campo individual antigo
+          const getCoverImage = () => {
+            const singleImg = getField('image');
+            if (singleImg) return singleImg;
+
+            const galleryImgMatch = text.match(/(?:gallery|image):\s*[\s\S]*?-\s*["\']?(\/images\/uploads\/[^"\n\r]+)["\']?/);
+            if (galleryImgMatch) return galleryImgMatch[1];
+
+            const anyImgMatch = text.match(/\/images\/uploads\/[^\s"'\)\r\n]+/);
+            if (anyImgMatch) return anyImgMatch[0];
+
+            return 'https://via.placeholder.com/400x250?text=Sem+Foto';
+          };
+
           const title = getField('title') || 'Imóvel sem título';
           let price = getField('price');
           const category = getField('category') || 'Urbano';
-          const image = getField('image') || 'https://via.placeholder.com/400x250?text=Sem+Foto';
+          const image = getCoverImage();
           let area = getField('area');
           const location = getField('location') || 'São Miguel Arcanjo - SP';
           const bedrooms = getField('bedrooms');
@@ -103,10 +117,10 @@
           }
 
           let featuresHTML = '';
-          if (bedrooms || bathrooms) {
+          if ((bedrooms && bedrooms !== '0') || (bathrooms && bathrooms !== '0')) {
             featuresHTML = `<div class="flex gap-4 text-xs text-slate-500 mb-3 font-medium">`;
-            if (bedrooms) featuresHTML += `<span><i class="fas fa-bed text-slate-400 mr-1"></i>${bedrooms} dorms</span>`;
-            if (bathrooms) featuresHTML += `<span><i class="fas fa-bath text-slate-400 mr-1"></i>${bathrooms} banheiros</span>`;
+            if (bedrooms && bedrooms !== '0') featuresHTML += `<span><i class="fas fa-bed text-slate-400 mr-1"></i>${bedrooms} dorms</span>`;
+            if (bathrooms && bathrooms !== '0') featuresHTML += `<span><i class="fas fa-bath text-slate-400 mr-1"></i>${bathrooms} banheiros</span>`;
             featuresHTML += `</div>`;
           }
 
