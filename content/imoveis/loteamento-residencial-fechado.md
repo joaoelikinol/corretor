@@ -7,7 +7,7 @@ gallery:
   - /images/uploads/pasted-image-1789646263115.png
 bedrooms: '0'
 bathrooms: '0'
-area: 250 M2
+area: 250 m2
 location: São Miguel Arcanjo-SP
 ---
 
