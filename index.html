@@ -32,18 +32,28 @@
     </div>
   </section>
 
-  <!-- VITRINE DE IMÓVEIS -->
+  <!-- VITRINE DE IMÓVEIS (MAX 5) -->
   <main class="max-w-7xl mx-auto px-4 py-12 w-full flex-grow">
     <div class="border-b border-slate-200 pb-4 mb-8 flex justify-between items-center">
       <h3 class="text-2xl font-bold text-slate-900">Imóveis em Destaque</h3>
+      <a href="/imoveis.html" class="text-sm font-semibold text-slate-600 hover:text-amber-600 transition-colors flex items-center gap-1">
+        Ver todos <i class="fas fa-arrow-right text-xs"></i>
+      </a>
     </div>
 
-    <!-- Grid onde os imóveis do GitHub são inseridos dinamicamente -->
+    <!-- Grid de Destaques -->
     <div id="imoveis-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <div class="col-span-full text-center py-12 text-slate-500">
         <i class="fas fa-circle-notch fa-spin text-2xl mb-2 text-amber-500"></i>
-        <p>Carregando imóveis...</p>
+        <p>Carregando destaques...</p>
       </div>
+    </div>
+
+    <!-- BOTÃO PARA VER TODOS OS IMÓVEIS -->
+    <div class="mt-12 text-center">
+      <a href="/imoveis.html" class="inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg text-base">
+        <i class="fas fa-th-large text-amber-400"></i> Ver Todos os Imóveis Cadastrados
+      </a>
     </div>
   </main>
 
@@ -53,9 +63,9 @@
     <p class="text-xs text-slate-500 mt-1">São Miguel Arcanjo - SP</p>
   </footer>
 
-  <!-- SCRIPT DE CARREGAMENTO AUTOMÁTICO DE IMÓVEIS -->
+  <!-- SCRIPT DE CARREGAMENTO LIMITADO A 5 IMÓVEIS -->
   <script>
-    async function loadProperties() {
+    async function loadFeaturedProperties() {
       const container = document.getElementById('imoveis-grid');
       if (!container) return;
 
@@ -74,9 +84,11 @@
           return;
         }
 
+        // Limita a exibição aos 5 primeiros imóveis mais recentes
+        const featuredFiles = markdownFiles.slice(0, 5);
         container.innerHTML = '';
 
-        for (const file of markdownFiles) {
+        for (const file of featuredFiles) {
           const res = await fetch(file.download_url);
           const text = await res.text();
 
@@ -108,12 +120,8 @@
           const bedrooms = getField('bedrooms');
           const bathrooms = getField('bathrooms');
 
-          if (price && !price.toLowerCase().includes('r$')) {
-            price = 'R$ ' + price;
-          }
-          if (area && !isNaN(area)) {
-            area = area + ' m²';
-          }
+          if (price && !price.toLowerCase().includes('r$')) price = 'R$ ' + price;
+          if (area && !isNaN(area)) area = area + ' m²';
 
           let featuresHTML = '';
           if ((bedrooms && bedrooms !== '0') || (bathrooms && bathrooms !== '0')) {
@@ -159,7 +167,7 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', loadProperties);
+    document.addEventListener('DOMContentLoaded', loadFeaturedProperties);
   </script>
 </body>
 </html>
