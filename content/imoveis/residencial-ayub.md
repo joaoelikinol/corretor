@@ -5,6 +5,7 @@ category: Urbano
 gallery:
   - /images/uploads/Reserva_Ayub_3D_interativo.html
   - /images/uploads/pasted-image-1789991153871.png
+  - /images/uploads/Reserva_Ayub_3D_interativo.html
 bedrooms: '0'
 bathrooms: '0'
 area: 200 m2
